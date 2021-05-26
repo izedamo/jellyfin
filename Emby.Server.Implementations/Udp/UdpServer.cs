@@ -47,7 +47,7 @@ namespace Emby.Server.Implementations.Udp
             _config = configuration;
         }
 
-        private async Task RespondToV2Message(string messageText, EndPoint endpoint, CancellationToken cancellationToken)
+        private async Task RespondToV2Message(EndPoint endpoint, CancellationToken cancellationToken)
         {
             string localUrl = !string.IsNullOrEmpty(_config[AddressOverrideConfigKey])
                 ? _config[AddressOverrideConfigKey]
@@ -108,7 +108,7 @@ namespace Emby.Server.Implementations.Udp
                     var text = Encoding.UTF8.GetString(_receiveBuffer, 0, result.ReceivedBytes);
                     if (text.Contains("who is JellyfinServer?", StringComparison.OrdinalIgnoreCase))
                     {
-                        await RespondToV2Message(text, result.RemoteEndPoint, cancellationToken).ConfigureAwait(false);
+                        await RespondToV2Message(result.RemoteEndPoint, cancellationToken).ConfigureAwait(false);
                     }
                 }
                 catch (SocketException ex)
