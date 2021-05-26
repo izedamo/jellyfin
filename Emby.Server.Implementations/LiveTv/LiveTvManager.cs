@@ -403,7 +403,7 @@ namespace Emby.Server.Implementations.LiveTv
             // Set the total bitrate if not already supplied
             mediaSource.InferTotalBitrate();
 
-            if (!(service is EmbyTV.EmbyTV))
+            if (service is not EmbyTV.EmbyTV)
             {
                 // We can't trust that we'll be able to direct stream it through emby server, no matter what the provider says
                 // mediaSource.SupportsDirectPlay = false;
@@ -432,9 +432,7 @@ namespace Emby.Server.Implementations.LiveTv
 
             var id = _tvDtoService.GetInternalChannelId(serviceName, channelInfo.Id);
 
-            var item = _libraryManager.GetItemById(id) as LiveTvChannel;
-
-            if (item == null)
+            if (_libraryManager.GetItemById(id) is not LiveTvChannel item)
             {
                 item = new LiveTvChannel
                 {
